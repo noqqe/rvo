@@ -1,3 +1,6 @@
+.. image:: https://travis-ci.org/noqqe/rvo.svg?branch=master
+    :target: https://travis-ci.org/noqqe/rvo
+
 rvo
 ===
 
