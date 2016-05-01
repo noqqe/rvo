@@ -1,0 +1,8 @@
+.DS_Store
+*.pyc
+/rvo.egg-info/
+/dist/
+/build/
+.cache/*
+.coverage
+/.virtualenv/
