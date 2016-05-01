@@ -55,11 +55,11 @@ Configuration
 ::
 
     [General]
-		MongoDB = mongodb://localhost/
-		DB = rvo
-		Editor = vim
-		Pager = vim -R
-		MailFrom = user@example.net
+    MongoDB = mongodb://localhost/
+    DB = rvo
+    Editor = vim
+    Pager = vim -R
+    MailFrom = user@example.net
 
 After it was successfully configured, run ping to verfiy
 the connection to mongodb works.
