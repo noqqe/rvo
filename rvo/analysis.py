@@ -113,7 +113,7 @@ def get_long_words(content,count):
         if len(word) > 10:
             longwords.append(word)
 
-    longwords = sorted(longwords, key=len)
+    longwords = sorted(longwords, key=len, reverse=True)
 
     return longwords[0:count]
 
