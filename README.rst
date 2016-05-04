@@ -1,6 +1,13 @@
 .. image:: https://travis-ci.org/noqqe/rvo.svg?branch=master
     :target: https://travis-ci.org/noqqe/rvo
 
+.. image:: https://codecov.io/gh/noqqe/rvo/branch/master/graph/badge.svg
+  :target: https://codecov.io/gh/noqqe/rvo
+
+.. image:: https://codeclimate.com/github/noqqe/rvo/badges/gpa.svg
+   :target: https://codeclimate.com/github/noqqe/rvo
+   :alt: Code Climate
+
 rvo
 ===
 
