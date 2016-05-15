@@ -46,36 +46,15 @@ def list(tag, category, title, content, limit, dateto, datefrom, order):
     """
     coll = db.get_document_collection()
 
-    if len(tag) > 0:
-        tags = {"tags": { "$in": tag}}
-    else:
-        tags = {}
-
-    if len(category) > 0:
-        categories = {"categories": { "$in": category}}
-    else:
-        categories = {}
-
-    if len(title) > 0:
-        titles = []
-        for t in title:
-            titles.append(re.compile(t, re.IGNORECASE))
-        titles = {"title": { "$in": titles}}
-    else:
-        titles = {}
-
-    if len(content) > 0:
-        contents = []
-        for c in content:
-            contents.append(re.compile(c, re.IGNORECASE))
-        contents = {"content": { "$in": contents}}
-    else:
-        contents = {}
+    tags = utils.normalize_element(tag, "tags")
+    categories = utils.normalize_element(category, "categories")
+    title = utils.normalize_element(title, "title")
+    content = utils.normalize_element(content, "content")
 
     df = { "updated": { "$gte": datefrom }}
     de = { "updated": { "$lte": dateto }}
 
-    query = {"$and": [ tags, categories, contents, titles, de, df ] }
+    query = {"$and": [ tags, categories, content, title, de, df ] }
 
     print("")
     documents = {}
@@ -102,7 +81,8 @@ def list(tag, category, title, content, limit, dateto, datefrom, order):
     views.table(documents, limit+1)
 
     # print summary of results
-    results = coll.find(query).sort("created", -1).count()
+    results = coll.find(query).count()
     utils.log_info("%s out of %s result(s)." % (len(documents), results))
 
     return True
+

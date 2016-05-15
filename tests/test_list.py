@@ -6,20 +6,15 @@ def test_list():
     output = ['Tags', 'Cats', 'ID', 'Title']
     rvo_output(options,output)
 
-# def test_list_pattern():
-#     options = ['list', '-x', 'Whoop']
-#     output = ['Whoop', '2 out of 2 result']
+# def test_list_content():
+#     options = ['list', '-x', 'Nutrlla']
+#     output = ['Whoop']
 #     rvo_output(options,output)
 
-# def test_list_title_one():
-#     options = ['list', '-s', 'Reloaded']
-#     output = ['Reloaded', '1 out of 1 result']
-#     rvo_output(options,output)
-
-# def test_list_title_two():
-#     options = ['list', '-s', 'Nutella']
-#     output = ['Nutella']
-#     rvo_output(options,output)
+def test_list_title():
+    options = ['list', '-s', 'Nutella']
+    output = ['Nutella']
+    rvo_output(options,output)
 
 def test_list_categories():
     options = ['list', '-c', 'notes']

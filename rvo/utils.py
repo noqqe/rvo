@@ -1,3 +1,4 @@
+import re
 import sys
 import os
 import tempfile
@@ -124,3 +125,20 @@ def isatty():
     in the add method. Its not nice. It works. Its mine <3
     """
     return sys.stdin.isatty()
+
+# Transformation of elements
+
+def normalize_element(filter, field):
+    """
+    Turn items into a dict and apply regexes
+    """
+
+    if len(filter) > 0:
+        filters = []
+        for f in filter:
+            filters.append(re.compile(f, re.IGNORECASE))
+        filters = {field: { "$in": filters}}
+    else:
+        filters = {}
+
+    return filters

@@ -1,9 +1,11 @@
 
+import re
 import sys
 import pytest
 from click.testing import CliRunner
 from rvo import cli
 import rvo.commands.add
+import rvo.commands.list
 import datetime
 import rvo.config
 import mongomock
@@ -176,6 +178,18 @@ def mock_config():
     }
     return f
 
+def normalize_element_without_regex(filter, field):
+    """
+    mongomock does not support regex...
+    """
+    if len(filter) > 0:
+        filters = {field: { "$in": filter}}
+    else:
+        filters = {}
+
+    print filters
+    return filters
+
 # Monkeypatch the shit out of rvo
 @pytest.fixture(autouse=True)
 def get_document_collection(monkeypatch):
@@ -226,6 +240,10 @@ def validation_item():
 @pytest.fixture()
 def mock_datetime_today(monkeypatch):
     monkeypatch.setattr(datetime.datetime, "now", datetime(2016, 4, 11, 17, 6, 14, 121180))
+
+@pytest.fixture(autouse=True)
+def mock_normalize_element(monkeypatch):
+    monkeypatch.setattr(rvo.utils, "normalize_element", normalize_element_without_regex)
 
 # Reusable functions from within tests.
 def rvo_output(options, output):
