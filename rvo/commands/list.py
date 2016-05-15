@@ -33,7 +33,9 @@ from rvo.cli import validate_date
 @click.option('dateto', '-d', '--to', default=datetime.datetime.now(),
               callback=validate_date,
               help='Results by date ending at date')
-def list(tag, category, title, content, limit, dateto, datefrom):
+@click.option('-o', '--order', type=click.Choice(['created', 'updated']), default="updated",
+              help='Specify sorting of the results')
+def list(tag, category, title, content, limit, dateto, datefrom, order):
     """
     Lists documents from database based on the filters
     given. First stage is triggering the filter parser,
@@ -81,7 +83,7 @@ def list(tag, category, title, content, limit, dateto, datefrom):
 
     # Fetch results from collection and feed it into a numbered
     # dictonary
-    for doc in coll.find(query).sort("updated", -1).limit(limit):
+    for doc in coll.find(query).sort(order, -1).limit(limit):
         c += 1
         documents[c] = doc
 
