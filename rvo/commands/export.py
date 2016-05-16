@@ -45,15 +45,9 @@ def export(format, password, category, tag, objectid):
         doc, docid = db.get_document_by_id(str(objectid))
         docs.append(doc)
     else:
-        if len(category) > 0:
-            categories = {"categories": { "$in": category}}
-        else:
-            categories = {}
 
-        if len(tag) > 0:
-            tags = {"tags": { "$in": tag}}
-        else:
-            tags = {}
+        tags = utils.normalize_element(tag, "tags")
+        categories = utils.normalize_element(category, "categories")
 
         query = {"$and": [ tags, categories ] }
 
