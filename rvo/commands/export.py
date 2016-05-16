@@ -54,7 +54,6 @@ def export(format, password, category, tag, objectid):
         coll = db.get_document_collection()
 
         config = rvo.config.parse_config()
-        print config
 
         docs = coll.find(query).sort("updated", -1)
 
