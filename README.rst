@@ -8,12 +8,13 @@
    :target: https://codeclimate.com/github/noqqe/rvo
    :alt: Code Climate
 
+.. image:: https://raw.github.com/noqqe/rvo/master/images/rvo.png
+
 rvo
 ===
 
 I use ``rvo`` for managing my text data.
 
-.. image:: https://raw.github.com/noqqe/rvo/master/images/rvo.png
 
 -  Notes
 -  Docs (personal wiki)
