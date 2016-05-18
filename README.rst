@@ -13,6 +13,8 @@ rvo
 
 I use ``rvo`` for managing my text data.
 
+.. image:: https://raw.github.com/noqqe/rvo/master/images/rvo.png
+
 -  Notes
 -  Docs (personal wiki)
 -  Bookmarks
@@ -36,6 +38,8 @@ with ``rvo``.
 
 Features
 ~~~~~~~~
+
+.. image:: https://raw.github.com/noqqe/rvo/master/images/screenshot.png
 
 -  Rich search capabilities
 -  Statistics about the documents
