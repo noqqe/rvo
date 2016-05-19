@@ -1,4 +1,4 @@
 Credits
 =======
 
-"rvo" is written and maintained by Ryan Gooler
+"rvo" is written and maintained by Florian Baumann
