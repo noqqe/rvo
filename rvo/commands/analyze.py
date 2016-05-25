@@ -10,6 +10,7 @@ import rvo.analysis as analysis
 from rvo.crypto import crypto
 from rvo.validate import validate
 from tabulate import tabulate
+import rvo.config
 
 @click.command(short_help="Text analysis on a document",
                help="""
@@ -21,20 +22,44 @@ from tabulate import tabulate
                """)
 @click.option('password', '-p', '--password', required=False, default=False,
               help="Password for encrypted documents")
-@click.argument('docid')
-def analyze(docid, password):
+@click.option('-c', '--category', type=str, multiple=True,
+              help='Exports need to be in this category')
+@click.option('-t', '--tag', type=str, multiple=True,
+              help='Exports have to contain this tag')
+@click.option('objectid', '-i', '--id', type=str, default=False,
+              help='Exports document by id')
+def analyze(objectid, category, tag, password):
     """
     :docid: str
     :returns: bool
     """
 
-    doc, docid = db.get_document_by_id(docid)
     coll = db.get_document_collection()
 
-    content, c = db.get_content(doc, password=password)
-
     print("")
-    print(doc["title"] + "\n")
+    if objectid:
+        docs = []
+        doc, docid = db.get_document_by_id(str(objectid))
+        docs.append(doc)
+        utils.log_info(doc["title"] + "\n")
+    else:
+        tags = utils.normalize_element(tag, "tags")
+        categories = utils.normalize_element(category, "categories")
+        query = {"$and": [ tags, categories ] }
+        coll = db.get_document_collection()
+        config = rvo.config.parse_config()
+        docs = coll.find(query).sort("updated", -1)
+        utils.log_info("Text analysis on tags \"%s\" and categories \"%s\"" % (' '.join(tags), ' '.join(categories)))
+
+    content = ""
+    tags = []
+    cats = []
+    for doc in docs:
+        doc["content"], c = db.get_content(doc, password=password)
+        content += doc["content"]
+        tags.extend(doc["tags"])
+        cats.extend(doc["categories"])
+
 
     table = []
     headers = ["Analysis", "Result"]
@@ -42,10 +67,11 @@ def analyze(docid, password):
     table.append(["Sentences" , analysis.get_sentences(content)])
     table.append(["Words", analysis.get_words(content)])
     table.append(["Characters", analysis.get_characters(content)])
-    table.append(["Tags", len(doc["tags"])])
-    table.append(["Categories", len(doc["categories"])])
-    table.append(["Age of document", analysis.get_age_of_document(doc["created"])])
-    table.append(["Size of document", analysis.get_size_of_document(doc["content"])])
+    table.append(["Tags", len(tags)])
+    table.append(["Categories", len(categories)])
+    table.append(["Size of documents", analysis.get_size_of_document(content)])
+    if objectid:
+        table.append(["Age of document", analysis.get_age_of_document(doc["created"])])
 
     cwords = ""
     for w, f in analysis.get_most_common_words(content, 5):
@@ -65,13 +91,5 @@ def analyze(docid, password):
 
     print tabulate(table, headers=headers)
     print("")
-
-    if doc["encrypted"] is True:
-        content = content.encode("utf-8")
-        doc["content"] = c.encrypt_content(content)
-        if validate(doc):
-            coll.save(doc)
-        else:
-            utils.log_error("Validation of the updated object did not succeed")
 
     return True

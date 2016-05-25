@@ -185,7 +185,7 @@ def get_content(doc, crypto_object=False, password=False):
         if c is False:
             c = crypto(password)
         content = c.decrypt_content(doc["content"])
-        # content = content.decode("utf8")
+        content = content.decode("utf8")
     else:
         content = doc["content"]
 

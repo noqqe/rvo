@@ -36,10 +36,10 @@ def show(docid, password, stdout):
     if sys.stdout.isatty() and not stdout:
         utils.view_content_in_pager(config["pager"], template=content)
     else:
-        try:
-            print(content.encode("utf-8"))
-        except UnicodeDecodeError:
-            print(content)
+        # try:
+        #     print(content.encode("utf-8"))
+        # except UnicodeDecodeError:
+        print(content)
 
     transaction.log(docid, "show", doc["title"])
 
@@ -47,7 +47,7 @@ def show(docid, password, stdout):
     # in order to do not reuse the nonce from salsa20,
     # we have to reencrypt the content and update the field
     if doc["encrypted"] is True:
-        doc["content"] = c.encrypt_content(content)
+        doc["content"] = c.encrypt_content(content.encode("utf-8"))
         if validate(doc):
             coll.save(doc)
         else:
