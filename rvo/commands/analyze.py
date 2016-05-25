@@ -31,12 +31,7 @@ def analyze(docid, password):
     doc, docid = db.get_document_by_id(docid)
     coll = db.get_document_collection()
 
-    if doc["encrypted"] is True:
-        c = crypto(password)
-        content = c.decrypt_content(doc["content"])
-        content = content.decode("utf-8")
-    else:
-        content = doc["content"]
+    content, c = db.get_content(doc, password=password)
 
     print("")
     print(doc["title"] + "\n")

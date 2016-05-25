@@ -171,3 +171,22 @@ def add_transaction(item):
     transactions.insert(item)
     return True
 
+def get_content(doc, crypto_object=False, password=False):
+    """
+    Get content of a document.
+    For later use, it also returns the initialized crypto object
+    :doc: document object
+    :crypto_object: instance of class rvo.crypto.crypto
+    returns: str, crypto_object
+    """
+    from rvo.crypto import crypto
+    c = crypto_object
+    if doc["encrypted"] is True:
+        if c is False:
+            c = crypto(password)
+        content = c.decrypt_content(doc["content"])
+        # content = content.decode("utf8")
+    else:
+        content = doc["content"]
+
+    return content, c

@@ -31,11 +31,7 @@ def show(docid, password, stdout):
 
     config = rvo.config.parse_config()
 
-    if doc["encrypted"] is True:
-        c = crypto(password)
-        content = c.decrypt_content(doc["content"])
-    else:
-        content = doc["content"]
+    content, c = db.get_content(doc, password=password)
 
     if sys.stdout.isatty() and not stdout:
         utils.view_content_in_pager(config["pager"], template=content)

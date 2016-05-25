@@ -31,12 +31,7 @@ def append(docid, password, content):
 
     doc, docid = db.get_document_by_id(docid)
 
-    if doc["encrypted"] is True:
-        c = crypto(password)
-        template = c.decrypt_content(doc["content"])
-        template = template.decode("utf-8")
-    else:
-        template = doc["content"]
+    template, c = db.get_content(doc, password=password)
 
     d = datetime.datetime.now()
 

@@ -36,13 +36,7 @@ def edit(docid, password):
     doc, docid = db.get_document_by_id(docid)
     title = doc["title"]
 
-    if doc["encrypted"] is True:
-        c = crypto(password)
-        template = c.decrypt_content(doc["content"])
-        if template is False:
-            return False
-    else:
-        template = doc["content"]
+    template, c = db.get_content(doc, password=password)
 
     content, tmpfile = utils.get_content_from_editor(config["editor"], template=template)
     d = datetime.datetime.now()

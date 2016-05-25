@@ -68,8 +68,7 @@ def export_json(docs, password):
     jsondata = []
     for doc in docs:
         if doc["encrypted"] is True and password is not False:
-            c = crypto(password)
-            doc["content"] = c.decrypt_content(doc["content"])
+            doc["content"], c = db.get_content(doc, password=password)
         jsondata.append(doc)
 
     print(dumps(jsondata))
@@ -77,8 +76,7 @@ def export_json(docs, password):
 def export_markdown(docs, password):
     for doc in docs:
         if doc["encrypted"] is True and password is not False:
-            c = crypto(password)
-            doc["content"] = c.decrypt_content(doc["content"])
+            doc["content"], c = db.get_content(doc, password=password)
         else:
             doc["content"] = doc["content"].encode('utf8')
 
