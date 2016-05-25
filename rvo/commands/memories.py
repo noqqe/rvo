@@ -29,7 +29,9 @@ def memories(format):
 
     documents = {}
 
-    for year in reversed(range(1,40)):
+    limit = 0
+    utils.log_info("Documents having birthday today.\n")
+    for year in range(1,40):
         start = datetime.datetime.now() - relativedelta(years=year)
         start = start.replace(hour=0, minute=0, second=0, microsecond=0)
         end = datetime.datetime.now() - relativedelta(years=year,days=-1)
@@ -37,33 +39,27 @@ def memories(format):
 
         query = {"$and": [ {"created": {'$gte': start, '$lt': end}} ]}
 
-        if coll.find(query).count():
-            utils.log_info("%s year(s) ago today:\n" % year)
-        else:
-            continue
-
         if format == "table":
-            limit = 0
             docs = coll.find(query)
 
             for doc in docs:
                 limit += 1
                 documents[limit] = doc
 
-            db.clean_shortids()
-
-            for x in reversed(range(1, limit+1)):
-                db.map_shortid(sid=x, oid=documents[x]["_id"])
-                documents[x]["sid"] = x
-
-            views.table(documents, limit+1)
-
-            limit = 0
 
         if format == "detail":
             docs = coll.find(query)
             for doc in docs:
                 views.detail(doc)
+
+    # If not detail view - print all memories in one table
+    if format == "table":
+        db.clean_shortids()
+        for x in reversed(range(1, limit+1)):
+            db.map_shortid(sid=x, oid=documents[x]["_id"])
+            documents[x]["sid"] = x
+
+        views.table(documents, limit+1)
 
 
     return True
