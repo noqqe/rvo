@@ -49,7 +49,7 @@ def stats(objectid, category, tag, password):
         coll = db.get_document_collection()
         config = rvo.config.parse_config()
         docs = coll.find(query).sort("updated", -1)
-        utils.log_info("Text analysis on tags \"%s\" and categories \"%s\"" % (' '.join(tags), ' '.join(categories)))
+        utils.log_info("Text analysis")
 
     content = ""
     tags = []
