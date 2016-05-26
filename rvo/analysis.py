@@ -67,26 +67,24 @@ def get_word_distribution(content):
     return fdist
 
 
-def get_most_common_words(content, count):
+def get_most_common_words(fdist, count):
     """
     Get list of words that are most commonly
     used in this text
-    :content: str
+    :fdist: nltk object
     :words: int - number of words as result
     :returns: tuple - (words,frequency)
     """
-    fdist = get_word_distribution(content)
     return fdist.most_common(count)
 
-def get_least_common_words(content, count):
+def get_least_common_words(fdist, count):
     """
     Get list of words that are least commonly
     used in this text
-    :content: str
+    :fdist: nltk object
     :count: int - number of words as result
     :returns: list
     """
-    fdist = get_word_distribution(content)
     return fdist.hapaxes()[0:count]
 
 def get_words_per_sentence(content):
@@ -99,7 +97,7 @@ def get_words_per_sentence(content):
     sentences = get_sentences(content)
     return words / sentences
 
-def get_long_words(content,count):
+def get_long_words(fdist,count):
     """
     Get list of words that are least commonly
     used in this text
@@ -107,7 +105,6 @@ def get_long_words(content,count):
     :count: int - number of words as result
     :returns: list
     """
-    fdist = get_word_distribution(content)
     longwords = []
     for word in fdist:
         if len(word) > 10:
