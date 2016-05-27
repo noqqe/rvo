@@ -41,7 +41,6 @@ def stats(objectid, category, tag, password):
         docs = []
         doc, docid = db.get_document_by_id(str(objectid))
         docs.append(doc)
-        utils.log_info(doc["title"] + "\n")
     else:
         tags = utils.normalize_element(tag, "tags")
         categories = utils.normalize_element(category, "categories")
@@ -49,7 +48,6 @@ def stats(objectid, category, tag, password):
         coll = db.get_document_collection()
         config = rvo.config.parse_config()
         docs = coll.find(query).sort("updated", -1)
-        utils.log_info("Text analysis")
 
     content = ""
     tags = []
@@ -63,7 +61,12 @@ def stats(objectid, category, tag, password):
         tags.extend(doc["tags"])
         categories.extend(doc["categories"])
 
+    if len(content) == 0:
+        utils.log_error("No documents found with this query")
+        return False
 
+
+    utils.log_info("Text analysis\n")
     table = []
     headers = ["Analysis", "Result"]
 

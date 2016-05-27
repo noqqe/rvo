@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import re
 import sys
 import nltk
 import datetime
@@ -37,6 +38,9 @@ def get_word_distribution(content):
     """
     Returns a distribution file on words
     """
+
+    # remove urls
+    content = re.sub(r'^https?:\/\/.*[\r\n]*', '', content, flags=re.MULTILINE)
 
     # Remove non alphanumeric chars
     tokenizer = nltk.tokenize.RegexpTokenizer(r'\w+')
@@ -107,7 +111,7 @@ def get_long_words(fdist,count):
     """
     longwords = []
     for word in fdist:
-        if len(word) > 10:
+        if len(word) > 10 and len(word) < 70:
             longwords.append(word)
 
     longwords = sorted(longwords, key=len, reverse=True)

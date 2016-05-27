@@ -249,9 +249,9 @@ def mock_normalize_element(monkeypatch):
 def rvo_output(options, output):
     runner = CliRunner()
     result = runner.invoke(cli.cli, options)
-    assert result.exit_code == 0
     for out in output:
         assert out in result.output
+    assert result.exit_code == 0
     assert not result.exception
 
 def rvo_err(options):

@@ -49,7 +49,7 @@ def test_export_by_category():
     output = ['How', 'get', 'date', 'created', 'updated']
     rvo_output(options,output)
 
-def test_export_by_category():
+def test_export_by_tag():
     options = ['export', '-t', 'holiday']
     output = ['Whoop', 'leg', 'again', 'date', 'created', 'updated']
     rvo_output(options,output)
