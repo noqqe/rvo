@@ -48,8 +48,8 @@ def edit(docid, password):
         if not "links" in doc["categories"]:
             title = utils.get_title_from_content(content)
 
-    # if isinstance(template, unicode):
-    #     content = content.decode("utf-8")
+    if isinstance(template, unicode):
+        content = content.decode("utf-8")
 
     if content != template:
         doc["content"] = content
