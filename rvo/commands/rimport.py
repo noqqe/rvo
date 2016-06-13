@@ -53,4 +53,7 @@ def import_markdown(docs, password):
     print("Markdown not implemented yet")
 
 def import_mail(docs, password):
-    print("Mail not implemented yet")
+    content = ""
+    for l in click.get_text_stream('stdin'):
+        content = content + l
+    print content
