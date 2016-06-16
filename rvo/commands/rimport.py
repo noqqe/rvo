@@ -49,6 +49,9 @@ def import_mail(tag, category):
 
     # title
     subject, encoding = email.header.decode_header(msg['Subject'])[0]
+    if encoding is None:
+        encoding = "ascii"
+
     title = subject.decode(encoding)
 
     # content
