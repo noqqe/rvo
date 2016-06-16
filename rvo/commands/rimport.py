@@ -57,6 +57,7 @@ def import_mail(tag, category):
     # content
     content = msg.get_payload(decode=False)
     content = quopri.decodestring(content)
+    content = "# " + title + '\n\n' + content
     date = datetime.datetime.now()
 
     coll = db.get_document_collection()
