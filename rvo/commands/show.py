@@ -39,7 +39,7 @@ def show(docid, password, stdout):
         # try:
         #     print(content.encode("utf-8"))
         # except UnicodeDecodeError:
-        print(content)
+        print(content.encode("utf-8"))
 
     transaction.log(docid, "show", doc["title"])
 
