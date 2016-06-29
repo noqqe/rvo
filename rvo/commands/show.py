@@ -18,7 +18,8 @@ import rvo.config
               help="Password for encrypted documents")
 @click.option('stdout', '-s', '--stdout', required=False, default=False, is_flag=True,
               help="Print document to stdout instead of opening pager")
-def show(docid, password, stdout):
+@click.pass_context
+def show(ctx, docid, password, stdout):
     """
     Shows a single object from database
     and opens its content in a pager
@@ -29,7 +30,7 @@ def show(docid, password, stdout):
     coll = db.get_document_collection()
     doc, docid = db.get_document_by_id(docid)
 
-    config = rvo.config.parse_config()
+    config = ctx.obj["config"]
 
     content, c = db.get_content(doc, password=password)
 

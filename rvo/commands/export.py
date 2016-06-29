@@ -32,7 +32,8 @@ import rvo.config
               help='Exports have to contain this tag')
 @click.option('objectid', '-i', '--id', type=str, default=False,
               help='Exports document by id')
-def export(format, password, category, tag, objectid):
+@click.pass_context
+def export(ctx, format, password, category, tag, objectid):
     """
     Shows a single object from database
     and opens its content in a pager
@@ -53,7 +54,7 @@ def export(format, password, category, tag, objectid):
 
         coll = db.get_document_collection()
 
-        config = rvo.config.parse_config()
+        config = ctx.obj["config"]
 
         docs = coll.find(query).sort("updated", -1)
 

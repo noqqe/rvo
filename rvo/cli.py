@@ -7,6 +7,7 @@ import datetime
 import rvo.utils as utils
 from dateutil.parser import parse
 from rvo import __version__
+import rvo.config
 
 command_folder = os.path.join(os.path.dirname(__file__), 'commands')
 CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
@@ -60,8 +61,10 @@ by you and only you!
 
 """)
 @click.version_option(version=__version__, prog_name="rvo")
-def cli():
-    pass
+@click.pass_context
+def cli(ctx):
+    ctx.obj = {}
+    ctx.obj['config'] = rvo.config.parse_config()
 
 if __name__ == '__main__':
     cli()

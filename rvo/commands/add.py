@@ -31,7 +31,8 @@ from rvo.cli import validate_date
 @click.option('password', '-p', '--password', required=False, default=False,
               help="Password for encrypted documents")
 @click.option('content', '-x', '--content', default=False, required=False, help='Read content from parameter')
-def add(date, tags, categories, content, password, encrypt):
+@click.pass_context
+def add(ctx, date, tags, categories, content, password, encrypt):
     """
     Adds a new document
 
@@ -40,7 +41,7 @@ def add(date, tags, categories, content, password, encrypt):
     :returns: bool
     """
 
-    config = rvo.config.parse_config()
+    config = ctx.obj["config"]
 
     # Kindly ask for password when encryption comes
     if encrypt:

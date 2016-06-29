@@ -28,7 +28,6 @@ def append(docid, password, content):
     """
 
     coll = db.get_document_collection()
-
     doc, docid = db.get_document_by_id(docid)
 
     template, c = db.get_content(doc, password=password)

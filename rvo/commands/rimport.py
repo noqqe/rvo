@@ -25,23 +25,23 @@ import rvo.config
               help='Import to this category')
 @click.option('-t', '--tag', type=str, multiple=True,
               help='Import with this tag')
-def rimport(format, category, tag):
+@click.pass_context
+def rimport(ctx, format, category, tag):
     """ Import to rvo
     :returns: bool
     """
 
-
     if format == "json":
         import_json()
     if format == "mail":
-        import_mail(tag, category)
+        import_mail(ctx, tag, category)
 
     return True
 
 def import_json():
     print("JSON not implemented yet")
 
-def import_mail(tag, category):
+def import_mail(ctx, tag, category):
     content = ""
     for l in click.get_text_stream('stdin'):
         content = content + l
@@ -61,7 +61,7 @@ def import_mail(tag, category):
     date = datetime.datetime.now()
 
     coll = db.get_document_collection()
-    config = rvo.config.parse_config()
+    config = ctx.obj["config"]
 
     item = {
         "title": title,

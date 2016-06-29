@@ -248,7 +248,9 @@ def mock_normalize_element(monkeypatch):
 # Reusable functions from within tests.
 def rvo_output(options, output):
     runner = CliRunner()
-    result = runner.invoke(cli.cli, options)
+    print options
+    result = runner.invoke(cli=cli.cli, args=options)
+    print result
     for out in output:
         assert out in result.output
     assert result.exit_code == 0

@@ -22,7 +22,8 @@ import rvo.config
 @click.argument('docid')
 @click.option('password', '-p', '--password', required=False, default=False,
               help="Password for encrypted documents")
-def edit(docid, password):
+@click.pass_context
+def edit(ctx, docid, password):
     """
     Edit the content of an document.
     Trys to find the object, (decrypt,) read from editor,
@@ -31,7 +32,7 @@ def edit(docid, password):
     :returns: bool
     """
     coll = db.get_document_collection()
-    config = rvo.config.parse_config()
+    config = ctx.obj["config"]
 
     doc, docid = db.get_document_by_id(docid)
     title = doc["title"]

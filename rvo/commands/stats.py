@@ -28,7 +28,8 @@ import rvo.config
               help='filter for tags')
 @click.option('objectid', '-i', '--id', type=str, default=False,
               help='only on a single document by id')
-def stats(objectid, category, tag, password):
+@click.pass_context
+def stats(ctx, objectid, category, tag, password):
     """
     :docid: str
     :returns: bool
@@ -46,7 +47,9 @@ def stats(objectid, category, tag, password):
         categories = utils.normalize_element(category, "categories")
         query = {"$and": [ tags, categories ] }
         coll = db.get_document_collection()
-        config = rvo.config.parse_config()
+
+        config = ctx.obj["config"]
+
         docs = coll.find(query).sort("updated", -1)
 
     content = ""

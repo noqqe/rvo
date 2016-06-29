@@ -17,7 +17,8 @@ import simplemail
 @click.option('to', '-t', '--to', type=str, prompt="%s To" % utils.query_prefix,
               help='Recipient of the mail')
 @click.argument('docid')
-def mail(docid, to):
+@click.pass_context
+def mail(ctx, docid, to):
     """
     Mails a document to a recipient for your choice
     Its required to have a local unauthenticated smtpd running
@@ -27,7 +28,7 @@ def mail(docid, to):
     """
 
     coll = db.get_document_collection()
-    config = rvo.config.parse_config()
+    config = ctx.obj["config"]
     doc, docid = db.get_document_by_id(docid)
 
     try:
