@@ -13,13 +13,14 @@ import rvo.views as views
                """)
 @click.option('entries', '-e', '--entries', default=15, type=int,
               help='Number of entries being shown')
-def log(entries):
+@click.pass_context
+def log(ctx, entries):
     """
     Shows n latest transactions
     :n: int
     :returns: bool
     """
-    coll = db.get_transactions_collection()
+    coll = db.get_transactions_collection(ctx)
 
     SUM = {}
     c = 0

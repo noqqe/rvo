@@ -14,15 +14,16 @@ import rvo.transaction as transaction
                """)
 @click.argument('docid')
 @click.option('yes', '-y' ,'--yes', default=False, is_flag=True, help='Dont ask for confirmation')
-def delete(docid, yes):
+@click.pass_context
+def delete(ctx, docid, yes):
     """
     Deletes a document from the documentstore
     :docid: str (will be converted in bson object)
     :returns: bool
     """
-    doc, docid = db.get_document_by_id(docid)
+    doc, docid = db.get_document_by_id(ctx, docid)
     views.detail(doc)
-    coll = db.get_document_collection()
+    coll = db.get_document_collection(ctx)
 
     t = doc["title"]
     if yes:
@@ -32,6 +33,6 @@ def delete(docid, yes):
         if click.confirm("%s Are you sure, you want to delete this?" % utils.query_prefix):
             coll.remove({"_id": ObjectId(docid)})
             utils.log_info("Removed %s" % t)
-            transaction.log(docid, "delete", t)
+            transaction.log(ctx, docid, "delete", t)
             return True
 

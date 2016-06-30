@@ -16,7 +16,8 @@ from rvo.validate import validate
 @click.option('content', '-x', '--content', required=False, default=False,
               help="Content to be appended to the document")
 @click.argument('docid')
-def append(docid, password, content):
+@click.pass_context
+def append(ctx, docid, password, content):
     """
     Append string to a document
 
@@ -27,10 +28,10 @@ def append(docid, password, content):
     :returns: bool
     """
 
-    coll = db.get_document_collection()
-    doc, docid = db.get_document_by_id(docid)
+    coll = db.get_document_collection(ctx)
+    doc, docid = db.get_document_by_id(ctx, docid)
 
-    template, c = db.get_content(doc, password=password)
+    template, c = db.get_content(ctx, doc, password=password)
 
     d = datetime.datetime.now()
 
@@ -58,7 +59,7 @@ def append(docid, password, content):
         doc["updated"] = d
         if validate(doc):
             coll.save(doc)
-            transaction.log(docid, "append", title)
+            transaction.log(ctx, docid, "append", title)
             utils.log_info("Content appended to \"%s\"." % title)
         else:
             utils.log_error("Validation of the updated object did not succeed")

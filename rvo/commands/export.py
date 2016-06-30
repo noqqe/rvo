@@ -43,7 +43,7 @@ def export(ctx, format, password, category, tag, objectid):
 
     if objectid:
         docs = []
-        doc, docid = db.get_document_by_id(str(objectid))
+        doc, docid = db.get_document_by_id(ctx, str(objectid))
         docs.append(doc)
     else:
 
@@ -52,32 +52,32 @@ def export(ctx, format, password, category, tag, objectid):
 
         query = {"$and": [ tags, categories ] }
 
-        coll = db.get_document_collection()
+        coll = db.get_document_collection(ctx)
 
         config = ctx.obj["config"]
 
         docs = coll.find(query).sort("updated", -1)
 
     if format == "json":
-        export_json(docs, password)
+        export_json(ctx, docs, password)
     if format == "markdown":
-        export_markdown(docs, password)
+        export_markdown(ctx, docs, password)
 
     return True
 
-def export_json(docs, password):
+def export_json(ctx, docs, password):
     jsondata = []
     for doc in docs:
         if doc["encrypted"] is True and password is not False:
-            doc["content"], c = db.get_content(doc, password=password)
+            doc["content"], c = db.get_content(ctx, doc, password=password)
         jsondata.append(doc)
 
     print(dumps(jsondata))
 
-def export_markdown(docs, password):
+def export_markdown(ctx, docs, password):
     for doc in docs:
         if doc["encrypted"] is True and password is not False:
-            doc["content"], c = db.get_content(doc, password=password)
+            doc["content"], c = db.get_content(ctx, doc, password=password)
         else:
             doc["content"] = doc["content"].encode('utf8')
 

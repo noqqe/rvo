@@ -60,7 +60,7 @@ def import_mail(ctx, tag, category):
     content = "# " + title + '\n\n' + content
     date = datetime.datetime.now()
 
-    coll = db.get_document_collection()
+    coll = db.get_document_collection(ctx)
     config = ctx.obj["config"]
 
     item = {
@@ -75,10 +75,10 @@ def import_mail(ctx, tag, category):
 
     # insert item if its valid
     if validate(item):
-        coll = db.get_document_collection()
+        coll = db.get_document_collection(ctx)
         docid = coll.insert_one(item).inserted_id
 
-        transaction.log(str(docid), "add", title)
+        transaction.log(ctx, str(docid), "import", title)
         utils.log_info("Document \"%s\" created." % title)
 
     else:

@@ -12,7 +12,7 @@ import mongomock
 from bson import ObjectId
 from dateutil import parser
 
-def mock_documents_collection():
+def mock_documents_collection(ctx):
 
     docs = []
 
@@ -68,7 +68,7 @@ def mock_documents_collection():
         c.insert(doc)
     return c
 
-def mock_shortids_collection():
+def mock_shortids_collection(ctx):
 
     docs = []
 
@@ -104,7 +104,7 @@ def mock_shortids_collection():
         c.insert(doc)
     return c
 
-def mock_config_collection():
+def mock_config_collection(ctx):
 
     docs = []
 
@@ -121,7 +121,7 @@ def mock_config_collection():
     return c
 
 
-def mock_transactions_collection():
+def mock_transactions_collection(ctx):
 
     docs = []
 

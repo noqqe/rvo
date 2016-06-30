@@ -28,7 +28,8 @@ from rvo.cli import validate_date
               help='Set categories for this document')
 @click.option('date', '-d', '--date', default=None,
               help='Set a custom creation date for document', callback=validate_date)
-def modify(docid, tags, categories, encrypt, date):
+@click.pass_context
+def modify(ctx, docid, tags, categories, encrypt, date):
     """
     Modifies a documents meta data
     :docid: str (objectid)
@@ -37,10 +38,10 @@ def modify(docid, tags, categories, encrypt, date):
     :encrypt: str
     :returns: bool
     """
-    coll = db.get_document_collection()
+    coll = db.get_document_collection(ctx)
     d = datetime.datetime.now()
 
-    doc, docid = db.get_document_by_id(docid)
+    doc, docid = db.get_document_by_id(ctx, docid)
 
     # this is a total crazy hack to get
     # tuple ("a", "b", "c", " ", "d", "e")
@@ -54,36 +55,36 @@ def modify(docid, tags, categories, encrypt, date):
     if len(tags) > 0:
         coll.update({"_id": ObjectId(docid)}, {"$set": {"tags": tags, "updated": d}})
         utils.log_info("Updated tags to %s" % ', '.join(tags))
-        transaction.log(docid, "tags", doc["title"])
+        transaction.log(ctx, docid, "tags", doc["title"])
 
     if len(categories) > 0:
         coll.update({"_id": ObjectId(docid)}, {"$set": {"categories": categories, "updated": d}})
-        transaction.log(docid, "category", doc["title"])
         utils.log_info("Updated categories to %s" % ', '.join(categories))
+        transaction.log(ctx, docid, "category", doc["title"])
 
     if encrypt:
         if doc["encrypted"] is False:
-            c = crypto()
+            c = crypto(ctx=ctx, password=False)
             content = c.encrypt_content(doc["content"].encode("utf-8"))
             coll.update({"_id": ObjectId(docid)}, {"$set": {"content": content, "encrypted": True}})
             utils.log_info("Document %s is now stored encrypted" % doc["title"])
-            transaction.log(docid, "encrypted", doc["title"])
+            transaction.log(ctx, docid, "encrypted", doc["title"])
         else:
             utils.log_error("Document %s is already stored encrypted" % doc["title"])
 
     if not encrypt:
         if doc["encrypted"] is True:
-            c = crypto()
+            c = crypto(ctx=ctx, password=False)
             content = c.decrypt_content(doc["content"])
             coll.update({"_id": ObjectId(docid)}, {"$set": {"content": content, "encrypted": False}})
             utils.log_info("Document %s is now stored in plaintext" % doc["title"])
-            transaction.log(docid, "decrypted", doc["title"])
+            transaction.log(ctx, docid, "decrypted", doc["title"])
         else:
             utils.log_error("Document %s is already stored in plaintext" % doc["title"])
 
     if date != None:
         coll.update({"_id": ObjectId(docid)}, {"$set": {"created": date, "updated": d}})
-        transaction.log(docid, "date", doc["title"])
         utils.log_info("Updated creation date to %s" % date)
+        transaction.log(ctx, docid, "date", doc["title"])
 
     return True

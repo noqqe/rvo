@@ -31,13 +31,13 @@ def edit(ctx, docid, password):
     :docid: str (bson object)
     :returns: bool
     """
-    coll = db.get_document_collection()
+    coll = db.get_document_collection(ctx)
     config = ctx.obj["config"]
 
-    doc, docid = db.get_document_by_id(docid)
+    doc, docid = db.get_document_by_id(ctx, docid)
     title = doc["title"]
 
-    template, c = db.get_content(doc, password=password)
+    template, c = db.get_content(ctx, doc, password=password)
 
     content, tmpfile = utils.get_content_from_editor(config["editor"], template=template)
     d = datetime.datetime.now()
@@ -61,7 +61,7 @@ def edit(ctx, docid, password):
         else:
             utils.log_error("Validation of the updated object did not succeed")
 
-        transaction.log(docid, "edit", title)
+        transaction.log(ctx, docid, "edit", title)
         utils.log_info("Document \"%s\" updated." % title)
     else:
         utils.log_info("No changes detected for \"%s\"" % title)

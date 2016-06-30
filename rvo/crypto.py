@@ -20,11 +20,11 @@ import rvo.db as db
 class crypto(object):
     """ The crypto class for everything rvo needs. """
 
-    def __init__(self,password=False):
-        self.collection = db.get_config_collection()
-        coll = self.collection
+    def __init__(self, ctx, password=False):
+        self.collection = db.get_config_collection(ctx)
+        self.ctx = ctx
 
-        r = coll.find_one({"masterkey": {"$exists": True}})
+        r = self.collection.find_one({"masterkey": {"$exists": True}})
         if r is None:
             self.init_master()
 

@@ -7,7 +7,8 @@ import rvo.utils as utils
                 Verifys the connection to the database
                 and checks read/write access
                 """)
-def ping():
+@click.pass_context
+def ping(ctx):
     """
     Verifys the connection to the database
     and checks read/write access
@@ -15,13 +16,13 @@ def ping():
     :returns: bool
     """
     utils.log_info("Trying to connect to database...")
-    response = db.db_ping()
+    response = db.db_ping(ctx)
     if response:
         utils.log_info("Connection SUCCESSFUL")
     else:
         utils.log_error("Connection FAILED")
 
-    response = db.db_verify()
+    response = db.db_verify(ctx)
     utils.log_info("Trying to write, read, delete to test_collection...")
     if response:
         utils.log_info("Interactions were SUCCESSFUL")

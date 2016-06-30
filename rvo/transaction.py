@@ -1,7 +1,7 @@
 import datetime
 import rvo.db as db
 
-def log(document, type, title):
+def log(ctx, document, type, title):
     """
     Logs any interaction with rvo to the database
     One action generates exactly one entry in the transactions
@@ -19,5 +19,5 @@ def log(document, type, title):
         "type": type,
         "title": title
     }
-    db.add_transaction(item)
+    db.add_transaction(ctx, item)
 

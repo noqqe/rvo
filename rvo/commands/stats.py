@@ -35,18 +35,18 @@ def stats(ctx, objectid, category, tag, password):
     :returns: bool
     """
 
-    coll = db.get_document_collection()
+    coll = db.get_document_collection(ctx)
 
     print("")
     if objectid:
         docs = []
-        doc, docid = db.get_document_by_id(str(objectid))
+        doc, docid = db.get_document_by_id(ctx, str(objectid))
         docs.append(doc)
     else:
         tags = utils.normalize_element(tag, "tags")
         categories = utils.normalize_element(category, "categories")
         query = {"$and": [ tags, categories ] }
-        coll = db.get_document_collection()
+        coll = db.get_document_collection(ctx)
 
         config = ctx.obj["config"]
 
@@ -58,7 +58,7 @@ def stats(ctx, objectid, category, tag, password):
     c = False
     for doc in docs:
         if c is False:
-            doc["content"],c = db.get_content(doc, crypto_object=c, password=password)
+            doc["content"],c = db.get_content(ctx, doc, crypto_object=c, password=password)
 
         content += doc["content"]
         tags.extend(doc["tags"])

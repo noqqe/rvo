@@ -35,7 +35,8 @@ from rvo.cli import validate_date
               help='Results by date ending at date')
 @click.option('-o', '--order', type=click.Choice(['created', 'updated']), default="updated",
               help='Specify sorting of the results')
-def list(tag, category, title, content, limit, dateto, datefrom, order):
+@click.pass_context
+def list(ctx, tag, category, title, content, limit, dateto, datefrom, order):
     """
     Lists documents from database based on the filters
     given. First stage is triggering the filter parser,
@@ -44,7 +45,7 @@ def list(tag, category, title, content, limit, dateto, datefrom, order):
     :filters: string (formatted as l:foo or x:bar)
     :returns: bool
     """
-    coll = db.get_document_collection()
+    coll = db.get_document_collection(ctx)
 
     tags = utils.normalize_element(tag, "tags")
     categories = utils.normalize_element(category, "categories")
@@ -71,11 +72,11 @@ def list(tag, category, title, content, limit, dateto, datefrom, order):
     if c < limit:
         limit = c
 
-    db.clean_shortids()
+    db.clean_shortids(ctx)
     # reverse the order using the numbered keys
     # and display the object
     for x in reversed(range(1, limit+1)):
-        db.map_shortid(sid=x, oid=documents[x]["_id"])
+        db.map_shortid(ctx, sid=x, oid=documents[x]["_id"])
         documents[x]["sid"] = x
 
     views.table(documents, limit+1)

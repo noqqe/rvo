@@ -27,12 +27,12 @@ def show(ctx, docid, password, stdout):
     :returns: bool
     """
 
-    coll = db.get_document_collection()
-    doc, docid = db.get_document_by_id(docid)
+    coll = db.get_document_collection(ctx)
+    doc, docid = db.get_document_by_id(ctx, docid)
 
     config = ctx.obj["config"]
 
-    content, c = db.get_content(doc, password=password)
+    content, c = db.get_content(ctx, doc, password=password)
 
     if sys.stdout.isatty() and not stdout:
         utils.view_content_in_pager(config["pager"], template=content)
@@ -42,7 +42,7 @@ def show(ctx, docid, password, stdout):
         # except UnicodeDecodeError:
         print(content.encode("utf-8"))
 
-    transaction.log(docid, "show", doc["title"])
+    transaction.log(ctx, docid, "show", doc["title"])
 
     # showing the message means decrypting the message
     # in order to do not reuse the nonce from salsa20,

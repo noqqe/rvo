@@ -25,7 +25,7 @@ def memories(format):
     :format: str
     :returns: bool
     """
-    coll = db.get_document_collection()
+    coll = db.get_document_collection(ctx)
 
     documents = {}
 
@@ -54,9 +54,9 @@ def memories(format):
 
     # If not detail view - print all memories in one table
     if format == "table":
-        db.clean_shortids()
+        db.clean_shortids(ctx)
         for x in reversed(range(1, limit+1)):
-            db.map_shortid(sid=x, oid=documents[x]["_id"])
+            db.map_shortid(ctx, sid=x, oid=documents[x]["_id"])
             documents[x]["sid"] = x
 
         views.table(documents, limit+1)

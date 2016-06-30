@@ -45,7 +45,7 @@ def add(ctx, date, tags, categories, content, password, encrypt):
 
     # Kindly ask for password when encryption comes
     if encrypt:
-        c = crypto(password)
+        c = crypto(ctx, password)
         if not c:
             sys.exit(1)
 
@@ -111,10 +111,10 @@ def add(ctx, date, tags, categories, content, password, encrypt):
 
     # insert item if its valid
     if validate(item):
-        coll = db.get_document_collection()
+        coll = db.get_document_collection(ctx)
         docid = coll.insert_one(item).inserted_id
 
-        transaction.log(str(docid), "add", title)
+        transaction.log(ctx, str(docid), "add", title)
         utils.log_info("Document \"%s\" created." % title)
 
     else:

@@ -1,6 +1,7 @@
 #!/usr/bin/env python2.7
 
 import sys
+import pymongo
 import os
 import click
 import datetime
@@ -65,6 +66,7 @@ by you and only you!
 def cli(ctx):
     ctx.obj = {}
     ctx.obj['config'] = rvo.config.parse_config()
+    ctx.obj['db'] = pymongo.MongoClient(ctx.obj["config"]["uri"])
 
 if __name__ == '__main__':
     cli()

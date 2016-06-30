@@ -5,19 +5,19 @@ from bson.objectid import ObjectId
 import rvo.utils as utils
 import rvo.config
 
-def db_ping():
+def db_ping(ctx):
     """ Ping the connection to mongodb database
     :returns: bool
     """
     try:
-        config = rvo.config.parse_config()
-        c = pymongo.MongoClient(config["uri"])
+        config = ctx.obj["config"]
+        c = ctx.obj["db"]
         c.server_info()
         return True
     except:
         return False
 
-def db_verify():
+def db_verify(ctx):
     """ Does a test write, read and remove
     :returns: bool
     """
@@ -26,12 +26,12 @@ def db_verify():
         testcoll = "test_collection"
 
         # Fetch config and get db object
-        config = rvo.config.parse_config()
-        c = pymongo.MongoClient(config["uri"])
+        config = ctx.obj["config"]
+        c = ctx.obj["db"]
         db = c[config["db"]]
 
         # Get collection object
-        coll = get_collection(testcoll)
+        coll = get_collection(ctx, testcoll)
 
         # Do write test
         coll.insert({"a": 1})
@@ -51,77 +51,77 @@ def db_verify():
     except:
         return False
 
-def get_collection(coll):
+def get_collection(ctx, coll):
     """ Initialize MongoDB Connection
     :returns: collection object
     """
-    config = rvo.config.parse_config()
-    c = pymongo.MongoClient(config["uri"])
+    config = ctx.obj["config"]
+    c = ctx.obj["db"]
     db = c[config["db"]]
     collection = db[coll]
     return collection
 
-def get_document_collection():
+def get_document_collection(ctx):
     """
     Get document collection handle
     from config.
     :returns: collection object
     """
-    config = rvo.config.parse_config()
-    collection = get_collection(config["collection"])
+    config = ctx.obj["config"]
+    collection = get_collection(ctx, config["collection"])
     return collection
 
-def get_transactions_collection():
+def get_transactions_collection(ctx):
     """
     Get document collection handle
     from config.
     :returns: collection object
     """
-    config = rvo.config.parse_config()
-    collection = get_collection(config["transactions"])
+    config = ctx.obj["config"]
+    collection = get_collection(ctx, config["transactions"])
     return collection
 
-def get_config_collection():
+def get_config_collection(ctx):
     """
     Get document collection handle
     from config.
     :returns: collection object
     """
-    config = rvo.config.parse_config()
-    collection = get_collection(config["config"])
+    config = ctx.obj["config"]
+    collection = get_collection(ctx, config["config"])
     return collection
 
-def get_shortids_collection():
+def get_shortids_collection(ctx):
     """
     Get document collection handle
     from config.
     :returns: collection object
     """
-    config = rvo.config.parse_config()
-    collection = get_collection(config["shortids"])
+    config = ctx.obj["config"]
+    collection = get_collection(ctx, config["shortids"])
     return collection
 
-def check_for_duplicate(field, content):
+def check_for_duplicate(ctx, field, content):
     """ Check if url already exists in db
     :returns: bool
     """
-    config = rvo.config.parse_config()
-    coll = get_collection(config["collection"])
+    config = ctx.obj["config"]
+    coll = get_collection(ctx, config["collection"])
 
     if coll.find({field: content}).count() > 0:
         return True
     else:
         return False
 
-def get_document_by_id(id):
+def get_document_by_id(ctx, id):
     """
     Gets a document by its id, exits if false
     :coll: pymongo collection object
     :id: str
     :returns: dict, docid
     """
-    coll = get_document_collection()
-    shortids = get_shortids_collection()
+    coll = get_document_collection(ctx)
+    shortids = get_shortids_collection(ctx)
 
     try:
         doc = shortids.find_one({"sid": int(id)})
@@ -139,7 +139,7 @@ def get_document_by_id(id):
         utils.log_error("Error: %s is not a valid ID or ObjectId." % id)
         sys.exit(1)
 
-def map_shortid(sid, oid):
+def map_shortid(ctx, sid, oid):
     """
     Maps oid to a short id for better usage
     in commandline. At the end you have to type
@@ -151,27 +151,27 @@ def map_shortid(sid, oid):
     :oid: str (bson object id)
     :returns: dict
     """
-    shortids = get_shortids_collection()
+    shortids = get_shortids_collection(ctx)
     shortids.insert({"sid": sid, "oid": oid})
     return True
 
-def clean_shortids():
+def clean_shortids(ctx):
     """
     Cleans all shortids from cache collection.
     Necessary to get fresh results for every search
     :coll: pymongo collection object
     :returns: bool
     """
-    shortids = get_shortids_collection()
+    shortids = get_shortids_collection(ctx)
     shortids.remove({"$and": [{"sid": {"$exists": True}}, {"oid": {"$exists": True}}]})
     return True
 
-def add_transaction(item):
-    transactions = get_transactions_collection()
+def add_transaction(ctx, item):
+    transactions = get_transactions_collection(ctx)
     transactions.insert(item)
     return True
 
-def get_content(doc, crypto_object=False, password=False):
+def get_content(ctx, doc, crypto_object=False, password=False):
     """
     Get content of a document.
     For later use, it also returns the initialized crypto object
@@ -183,7 +183,7 @@ def get_content(doc, crypto_object=False, password=False):
     c = crypto_object
     if doc["encrypted"] is True:
         if c is False:
-            c = crypto(password)
+            c = crypto(ctx=ctx, password=password)
         content = c.decrypt_content(doc["content"])
         content = content.decode("utf8")
     else:

@@ -27,9 +27,9 @@ def mail(ctx, docid, to):
     :returns: bool
     """
 
-    coll = db.get_document_collection()
+    coll = db.get_document_collection(ctx)
     config = ctx.obj["config"]
-    doc, docid = db.get_document_by_id(docid)
+    doc, docid = db.get_document_by_id(ctx, docid)
 
     try:
         simplemail.Email(
