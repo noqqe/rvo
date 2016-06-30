@@ -13,7 +13,7 @@ def read_from_file(path):
 
 setup(
     name='rvo',
-    version='21.0.0',
+    version='22.0.0',
     description='Managing text data from the commandline',
     long_description=read_from_file('README.rst'),
     url='https://github.com/noqqe/rvo',
