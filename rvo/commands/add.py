@@ -90,7 +90,7 @@ def add(ctx, date, tags, categories, content, password, encrypt):
         content = content.rstrip()
 
         # check for duplicates
-        if db.check_for_duplicate(field="url", content=content) is True:
+        if db.check_for_duplicate(ctx, field="url", content=content) is True:
             utils.log_info("Duplicate found")
 
         # fetch title and set category
