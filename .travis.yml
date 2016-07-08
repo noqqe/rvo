@@ -5,6 +5,7 @@ python:
 # command to install dependencies
 install:
   - pip install .
+  - python -c 'import nltk; nltk.download("book")'
 
 # command to run tests
 script: PYTHONPATH=. py.test --cov=rvo
