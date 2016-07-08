@@ -7,3 +7,8 @@ def test_memories():
     output = ["Whoop", "jrnl", "holiday", "vacation"]
     rvo_output(options,output)
 
+def test_memories_detail():
+    options = ['memories', '-d', '2017-03-01', '-f', 'detail']
+    output = ["Whoop", "jrnl", "holiday", "vacation"]
+    rvo_output(options,output)
+
