@@ -20,7 +20,10 @@ from rvo.cli import validate_date
 @click.option('format', '--format', '-f',
               type=click.Choice(['table', 'detail']), default='table',
               help='Results by date ending at date')
-def memories(format):
+@click.option('date', '-d', '--date', default=datetime.datetime.now(),
+              help='Set a custom creation date for document', callback=validate_date)
+@click.pass_context
+def memories(ctx, format, date):
     """
     :format: str
     :returns: bool
@@ -32,9 +35,9 @@ def memories(format):
     limit = 0
     utils.log_info("Documents having birthday today.\n")
     for year in range(1,40):
-        start = datetime.datetime.now() - relativedelta(years=year)
+        start = date - relativedelta(years=year)
         start = start.replace(hour=0, minute=0, second=0, microsecond=0)
-        end = datetime.datetime.now() - relativedelta(years=year,days=-1)
+        end = date - relativedelta(years=year,days=-1)
         end = end.replace(hour=0, minute=0, second=0, microsecond=0)
 
         query = {"$and": [ {"created": {'$gte': start, '$lt': end}} ]}
