@@ -37,7 +37,7 @@ def parse_config(conf="~/.rvo.conf"):
     try:
         con["pageropts"] = config.get("General", "PagerOptions")
     except ConfigParser.NoOptionError:
-        con["pageropts"] = "+set nospell nonumber"
+        con["pageropts"] = None
 
     try:
         con["mailfrom"] = config.get("General", "MailFrom")

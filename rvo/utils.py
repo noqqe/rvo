@@ -49,7 +49,12 @@ def view_content_in_pager(config, opts, template=""):
                 f.write(template.encode("utf-8"))
             except (UnicodeEncodeError, UnicodeDecodeError) as e:
                 f.write(template)
-    subprocess.call(config.split() + [opts] + [tmpfile])
+
+    if opts is not None:
+        subprocess.call(config.split() + [opts] + [tmpfile])
+    else:
+        subprocess.call(config.split() + [tmpfile])
+
     os.remove(tmpfile)
     return True
 
