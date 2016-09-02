@@ -33,11 +33,12 @@ def get_content_from_editor(config, template=""):
         sys.exit(1)
     return raw, tmpfile
 
-def view_content_in_pager(config, template=""):
+def view_content_in_pager(config, opts, template=""):
     """
     Writes content to file and opens up the pager that is
     parameter config. Temp file will be deleted afterwards.
     :config: str (commands)
+    :opts: str (pager options for commandline)
     :template: str
     :returns: bool
     """
@@ -48,7 +49,7 @@ def view_content_in_pager(config, template=""):
                 f.write(template.encode("utf-8"))
             except (UnicodeEncodeError, UnicodeDecodeError) as e:
                 f.write(template)
-    subprocess.call(config.split() + ["+set nospell nonumber"] + [tmpfile])
+    subprocess.call(config.split() + [opts] + [tmpfile])
     os.remove(tmpfile)
     return True
 

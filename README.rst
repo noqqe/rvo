@@ -73,7 +73,8 @@ Configuration
     MongoDB = mongodb://localhost/
     DB = rvo
     Editor = vim
-    Pager = vim -R
+    Pager = vim
+    PagerOptions = -R
     MailFrom = user@example.net
 
 After it was successfully configured, run ping to verfiy

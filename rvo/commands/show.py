@@ -35,7 +35,7 @@ def show(ctx, docid, password, stdout):
     content, c = db.get_content(ctx, doc, password=password)
 
     if sys.stdout.isatty() and not stdout:
-        utils.view_content_in_pager(config["pager"], template=content)
+        utils.view_content_in_pager(config["pager"], config['pageropts'], template=content)
     else:
         # try:
         #     print(content.encode("utf-8"))
