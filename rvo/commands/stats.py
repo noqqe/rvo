@@ -1,3 +1,4 @@
+import sys
 import re
 import click
 import datetime
@@ -37,7 +38,6 @@ def stats(ctx, objectid, category, tag, password):
 
     coll = db.get_document_collection(ctx)
 
-    print("")
     if objectid:
         docs = []
         doc, docid = db.get_document_by_id(ctx, str(objectid))
@@ -72,6 +72,14 @@ def stats(ctx, objectid, category, tag, password):
     utils.log_info("Text analysis\n")
     table = []
     headers = ["Analysis", "Result"]
+
+    try:
+        analysis.get_sentences("this is a test")
+    except LookupError:
+        utils.log_error("NLTK is needed to do text analysis on your document")
+        utils.log_error("In order to do this, execute:")
+        utils.log_error(' python -c \'import nltk; nltk.download("book")\'')
+        sys.exit(1)
 
     table.append(["Sentences" , analysis.get_sentences(content)])
     table.append(["Words", analysis.get_words(content)])
