@@ -1,11 +1,8 @@
 #!/usr/bin/env python2.7
 
-import sys
-import pymongo
 import os
+import pymongo
 import click
-import datetime
-import rvo.utils as utils
 from dateutil.parser import parse
 from rvo import __version__
 import rvo.config
@@ -27,13 +24,13 @@ def validate_date(ctx, param, value):
 class rvoCommands(click.MultiCommand):
 
     def list_commands(self, ctx):
-        rv = []
+        rvo_commands = []
         for filename in os.listdir(command_folder):
             #if filename.endswith('.py'):
             if filename.endswith('.py') and not filename.startswith('__init__'):
-                rv.append(filename[:-3])
-        rv.sort()
-        return rv
+                rvo_commands.append(filename[:-3])
+        rvo_commands.sort()
+        return rvo_commands
 
     def get_command(self, ctx, name):
         ns = {}
