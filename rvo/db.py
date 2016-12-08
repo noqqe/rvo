@@ -124,13 +124,13 @@ def get_document_by_id(ctx, id):
     shortids = get_shortids_collection(ctx)
 
     try:
-        doc = shortids.find_one({"sid": int(id)})
+        doc = shortids.find_one({"sid": int(id)}, {"sid": 1})
         id = str(doc["oid"])
     except (IndexError, ValueError, TypeError) as e:
         pass
 
     try:
-        doc = coll.find_one({"_id": ObjectId(id)})
+        doc = coll.find_one({"_id": ObjectId(id)}, {"_id": 1})
         if doc is None:
             utils.log_info("No Results for %s" % id)
             sys.exit(1)
