@@ -18,7 +18,7 @@ def validate_date(ctx, param, value):
     try:
         value = parse(value)
         return value
-    except AttributeError:
+    except (AttributeError, TypeError) as e:
         return value
     except ValueError:
         raise click.BadParameter('Date format \"%s\" not valid' % value)
