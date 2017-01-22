@@ -59,12 +59,11 @@ def list(ctx, tag, category, title, content, limit, dateto, datefrom, order):
 
     print("")
     documents = {}
-    projection = { "_id" : 1, "title": 1, "created": 1, "updated": 1, "tags": 1, "categories": 1 }
     c = 0
 
     # Fetch results from collection and feed it into a numbered
     # dictonary
-    for doc in coll.find(query, projection).sort(order, -1).limit(limit):
+    for doc in coll.find(query).sort(order, -1).limit(limit):
         c += 1
         documents[c] = doc
 
@@ -83,7 +82,7 @@ def list(ctx, tag, category, title, content, limit, dateto, datefrom, order):
     views.table(documents, limit+1)
 
     # print summary of results
-    results = coll.find(query, {"_id": 1}).count()
+    results = coll.find(query).count()
     utils.log_info("%s out of %s result(s)." % (len(documents), results))
 
     return True
