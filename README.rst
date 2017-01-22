@@ -67,6 +67,8 @@ For me it's OpenBSDs "pkg_add".
 Configuration
 ~~~~~~~~~~~~~
 
+Add this to the config file ``~/.rvo.conf``
+
 ::
 
     [General]
