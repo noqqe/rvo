@@ -53,6 +53,8 @@ Features
 Installation
 ~~~~~~~~~~~~
 
+Currently, rvo only works in python2.7
+
 ::
 
     pip install rvo
