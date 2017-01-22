@@ -148,3 +148,25 @@ def normalize_element(filter, field):
         filters = {}
 
     return filters
+
+def remove_emojis(content):
+    """
+	Removes emojis from a string
+	:content: str
+    :returns: str
+    """
+    content = unicode(content)
+    try:
+        emojis = re.compile(u'['
+        u'\U0001F300-\U0001F64F'
+        u'\U0001F680-\U0001F6FF'
+        u'\u2600-\u26FF\u2700-\u27BF]+',
+        re.UNICODE)
+    except re.error:
+        emojis = re.compile(u'('
+        u'\ud83c[\udf00-\udfff]|'
+        u'\ud83d[\udc00-\ude4f\ude80-\udeff]|'
+        u'[\u2600-\u26FF\u2700-\u27BF])+',
+        re.UNICODE)
+
+    return emojis.sub('', content) # no emoji

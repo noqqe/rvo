@@ -79,6 +79,9 @@ def add(ctx, date, tags, categories, content, password, encrypt):
     # Generate title from content
     title = utils.get_title_from_content(content)
 
+    # Remove emojis
+    title = utils.remove_emojis(title)
+
     # Encrypt
     if encrypt is True:
         content = c.encrypt_content(content)
