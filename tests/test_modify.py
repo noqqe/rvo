@@ -24,7 +24,7 @@ def test_modify_two_cats():
 
 def test_modify_no_cats_no_tags():
     options = ['modify', '569e5eed6815b47ce7bdb583']
-    output = ['is already stored in plaintext']
+    output = ['']
     rvo_output(options,output)
 
 def test_modify_two_cats():
@@ -64,7 +64,7 @@ def test_modify_shortid_two_cats():
 
 def test_modify_shortid_no_cats_no_tags():
     options = ['modify', '1']
-    output = ['is already stored in plaintext']
+    output = ['']
     rvo_output(options,output)
 
 def test_modify_shortid_two_cats():
@@ -80,12 +80,18 @@ def test_modify_shortid_no_parameters():
 
 def test_modify_encrypt_by_input_wrong_pw():
     runner = CliRunner()
-    result = runner.invoke(cli.cli, ['modify', '-e', '1'], input="wrongpw\n")
+    result = runner.invoke(cli.cli, ['modify', '-e', 'yes', '1'], input="wrongpw\n")
     assert result.exception
     assert result.output.strip().endswith('Invalid Password')
 
 def test_modify_encrypt_by_input():
     runner = CliRunner()
-    result = runner.invoke(cli.cli, ['modify', '-e', '1'], input="test123\n")
+    result = runner.invoke(cli.cli, ['modify', '-e', 'yes', '1'], input="test123\n")
     assert not result.exception
     assert result.output.strip().endswith('ninja is now stored encrypted')
+
+def test_modify_no_encrypt_by_input():
+    runner = CliRunner()
+    result = runner.invoke(cli.cli, ['modify', '-e', 'no', '1'])
+    assert not result.exception
+    assert result.output.strip().endswith('is already stored in plaintext')
