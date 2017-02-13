@@ -1,6 +1,65 @@
 Changelog
 =========
 
+23.0.0 (2017-02-13)
+-------------------
+
+Feature
+~~~~~~~
+
+- Feature: remove emojis from titles. [Florian Baumann]
+
+Other
+~~~~~
+
+- Release: 23.0.0. [Florian Baumann]
+
+- Location. [Florian Baumann]
+
+- Fixes #8 -e flag is confusing. [Florian Baumann]
+
+- Fix list test. [Florian Baumann]
+
+- Revert &quot;field projection for mongodb queries&quot; [Florian Baumann]
+
+  This reverts commit 2646384e7be62a128a31d1fd0e2e92b388d998e6.
+
+- 2.7 notice in readme. [Florian Baumann]
+
+- Config file for readme. [Florian Baumann]
+
+- Field projection for mongodb queries. [Florian Baumann]
+
+- Fix small error while parsing date from list command. [Florian Baumann]
+
+- Revert &quot;Order changed&quot; [Florian Baumann]
+
+  This reverts commit 6546f8bbb566fa8d250fbdbac5bd44bc54b74d01.
+
+- Order changed. [Florian Baumann]
+
+- Ignore vscode. [Florian Baumann]
+
+- Catch error for initialized nltk data to fix #7. [Florian Baumann]
+
+- Fix more as a pager #5. [Florian Baumann]
+
+- Configurable pager options to fix #4. [Florian Baumann]
+
+- More memories test. [Florian Baumann]
+
+- Memories are testable now. [Florian Baumann]
+
+- Memories now testable. [Florian Baumann]
+
+- Download nltk stuff in travis tests. [Florian Baumann]
+
+- Codeclimate. [Florian Baumann]
+
+- Fix duplicate keys without ctx. [Florian Baumann]
+
+- History. [Florian Baumann]
+
 22.0.0 (2016-06-30)
 -------------------
 
