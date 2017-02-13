@@ -4,7 +4,7 @@ import datetime
 import rvo.db as db
 import rvo.utils as utils
 import rvo.views as views
-from rvo.cli import validate_date
+from rvo.validate import validate_date
 
 @click.command(short_help="List documents from store",
                help="""

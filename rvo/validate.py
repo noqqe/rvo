@@ -1,4 +1,29 @@
 import datetime
+from geopy.geocoders import Nominatim
+from dateutil.parser import parse
+
+# validators
+def validate_date(ctx, param, value):
+    try:
+        value = parse(value)
+        return value
+    except (AttributeError, TypeError) as e:
+        return value
+    except ValueError:
+        raise click.BadParameter('Date format \"%s\" not valid' % value)
+
+def validate_location(ctx, param, value):
+
+        if value is None:
+            return value
+
+        geolocator = Nominatim()
+        location = geolocator.geocode(value)
+
+        if location is None:
+            raise click.BadParameter('Location \"%s\" could not be found' % value)
+
+        return location
 
 def validate(document):
 

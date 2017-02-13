@@ -5,7 +5,7 @@ import rvo.db as db
 import rvo.utils as utils
 import rvo.transaction as transaction
 from rvo.crypto import crypto
-from rvo.cli import validate_date
+from rvo.validate import validate_date
 
 @click.command(short_help="Modifies a documents metadata",
                help="""

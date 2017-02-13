@@ -137,3 +137,14 @@ def test_add_conflicting_stdin_reading(isatty_false):
     result = runner.invoke(cli.cli, ['add', '-e'], input="Schwifty\nSchwifty..lol\nMorty\n\n")
     assert result.exception
     assert result.output.strip().endswith('Invalid Password')
+
+def test_add_location_germany(isatty_true):
+    runner = CliRunner()
+    result = runner.invoke(cli.cli, ['add', '-l', 'Nuremberg', '-c', 'test'])
+    assert result.output.strip().endswith('Document "TEST" created.')
+    assert not result.exception
+
+def test_add_location_invalid(isatty_true):
+    runner = CliRunner()
+    result = runner.invoke(cli.cli, ['add', '-l', 'DOESNOTEXISTTOWNATLEASTIHOPE', '-c', 'test'])
+    assert result.exception

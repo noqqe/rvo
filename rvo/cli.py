@@ -6,22 +6,11 @@ import os
 import click
 import datetime
 import rvo.utils as utils
-from dateutil.parser import parse
 from rvo import __version__
 import rvo.config
 
 command_folder = os.path.join(os.path.dirname(__file__), 'commands')
 CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
-
-# validators
-def validate_date(ctx, param, value):
-    try:
-        value = parse(value)
-        return value
-    except (AttributeError, TypeError) as e:
-        return value
-    except ValueError:
-        raise click.BadParameter('Date format \"%s\" not valid' % value)
 
 # rvo command class
 class rvoCommands(click.MultiCommand):
