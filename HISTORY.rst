@@ -2,8 +2,11 @@ Changelog
 =========
 
 
-%%version%% (unreleased)
-------------------------
+23.0.3 (2017-02-16)
+-------------------
+- Release: 23.0.3. [Florian Baumann]
+- Release tag fix. [Florian Baumann]
+- Changelog: 23.0.2. [Florian Baumann]
 - Release: 23.0.2. [Florian Baumann]
 - Changelogfix. [Florian Baumann]
 - Release: 23.0.1. [Florian Baumann]
