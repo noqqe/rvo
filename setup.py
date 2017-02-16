@@ -11,9 +11,11 @@ def read_from_file(path):
         with open(path,"rb","utf-8") as input:
             return input.read()
 
+version = "23.0.0"
+
 setup(
     name='rvo',
-    version=read_from_file("VERSION").strip(),
+    version=version,
     description='Managing text data from the commandline',
     long_description=read_from_file('README.rst'),
     url='https://github.com/noqqe/rvo',
