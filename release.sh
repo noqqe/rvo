@@ -25,7 +25,7 @@ echo commit
 git commit -m "Release: $v"
 
 echo tagging..
-git tag v${v}
+git tag ${v}
 
 echo creating history.rst
 gitchangelog > HISTORY.rst
