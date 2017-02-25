@@ -2,6 +2,14 @@ Changelog
 =========
 
 
+23.0.4 (2017-02-25)
+-------------------
+- Release: 23.0.4. [Florian Baumann]
+- Merge branch 'master' of github.com:noqqe/rvo. [Florian Baumann]
+- Changelog: 23.0.3. [Florian Baumann]
+- Changes. [Florian Baumann]
+
+
 23.0.3 (2017-02-16)
 -------------------
 - Release: 23.0.3. [Florian Baumann]
