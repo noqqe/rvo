@@ -2,6 +2,13 @@ Changelog
 =========
 
 
+23.0.6 (2017-02-25)
+-------------------
+- Release: 23.0.6. [Florian Baumann]
+- Fix for emojis. [Florian Baumann]
+- Changelog: 23.0.5. [Florian Baumann]
+
+
 23.0.5 (2017-02-25)
 -------------------
 - Release: 23.0.5. [Florian Baumann]
