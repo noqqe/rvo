@@ -2,6 +2,12 @@ Changelog
 =========
 
 
+23.0.5 (2017-02-25)
+-------------------
+- Release: 23.0.5. [Florian Baumann]
+- Changelog: 23.0.4. [Florian Baumann]
+
+
 23.0.4 (2017-02-25)
 -------------------
 - Release: 23.0.4. [Florian Baumann]
