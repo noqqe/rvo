@@ -5,7 +5,7 @@ from dateutil.relativedelta import relativedelta
 import rvo.db as db
 import rvo.utils as utils
 import rvo.views as views
-from rvo.cli import validate_date
+from rvo.validate import validate_date
 
 @click.command(short_help="Some nostalgia by showing documents some years ago",
                help="""

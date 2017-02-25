@@ -11,9 +11,11 @@ def read_from_file(path):
         with open(path,"rb","utf-8") as input:
             return input.read()
 
+version = "23.0.3"
+
 setup(
     name='rvo',
-    version='22.0.0',
+    version=version,
     description='Managing text data from the commandline',
     long_description=read_from_file('README.rst'),
     url='https://github.com/noqqe/rvo',
@@ -36,7 +38,7 @@ setup(
     install_requires=['pymongo', 'configparser', 'BeautifulSoup4',
                       'pynacl', 'pyblake2', 'tabulate', 'click',
                       'python-dateutil', 'python-simplemail', 'nltk',
-                      'hurry.filesize'],
+                      'hurry.filesize', 'geopy'],
     entry_points={
         'console_scripts': [
             'rvo=rvo.cli:cli',

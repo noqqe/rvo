@@ -53,7 +53,7 @@ def test_list_tags_two():
 
 def test_list_from_to_year():
     options = ['list', '--from', '2015', '--to', '2016']
-    output = ['2 out of 2 result(s)', 'jrnl']
+    output = ['1 out of 1 result(s)', 'notes']
     rvo_output(options,output)
 
 def test_list_from_year():

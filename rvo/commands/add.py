@@ -8,9 +8,8 @@ import rvo.db as db
 import rvo.views as views
 import rvo.utils as utils
 import rvo.transaction as transaction
-from rvo.validate import validate
+from rvo.validate import validate, validate_date, validate_location
 from rvo.crypto import crypto
-from rvo.cli import validate_date
 
 @click.command(help="""
             Add a document. 'add' is made to be very intuitive and functional.
@@ -27,18 +26,16 @@ from rvo.cli import validate_date
               type=str, required=False, show_default=False, multiple=True,
               help='Set categories for this document')
 @click.option('date', '-d', '--date', default=datetime.datetime.now(),
-              help='Set a custom creation date for document', callback=validate_date)
+              help='Set a custom creation date for this document', callback=validate_date)
+@click.option('location', '-l', '--location', default=None, required=False,
+              help='Set a location for this document', callback=validate_location)
 @click.option('password', '-p', '--password', required=False, default=False,
               help="Password for encrypted documents")
 @click.option('content', '-x', '--content', default=False, required=False, help='Read content from parameter')
 @click.pass_context
-def add(ctx, date, tags, categories, content, password, encrypt):
+def add(ctx, date, tags, categories, location, content, password, encrypt):
     """
-    Adds a new document
-
-    :encrypt: bool
-    :date: datetime object
-    :returns: bool
+    Adds a new document with various meta data options.
     """
 
     config = ctx.obj["config"]
@@ -79,6 +76,9 @@ def add(ctx, date, tags, categories, content, password, encrypt):
     # Generate title from content
     title = utils.get_title_from_content(content)
 
+    # Remove emojis
+    title = utils.remove_emojis(title)
+
     # Encrypt
     if encrypt is True:
         content = c.encrypt_content(content)
@@ -98,6 +98,17 @@ def add(ctx, date, tags, categories, content, password, encrypt):
 
         categories = ["links"]
 
+    # location
+    loc = {}
+    if location is None:
+        loc["address"] = None
+        loc["lat"] = None
+        loc["long"] = None
+    else:
+        loc["address"] = location.address
+        loc["lat"] = location.latitude
+        loc["long"] = location.longitude
+
     # build item to insert into collection
     item = {
         "title": title,
@@ -106,7 +117,8 @@ def add(ctx, date, tags, categories, content, password, encrypt):
         "categories": list(categories),
         "created": date,
         "updated": date,
-        "encrypted": encrypt
+        "encrypted": encrypt,
+        "location": loc,
     }
 
     # insert item if its valid

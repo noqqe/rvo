@@ -1,36 +1,28 @@
 #!/usr/bin/env python2.7
 
-import os
+import sys
 import pymongo
+import os
 import click
-from dateutil.parser import parse
+import datetime
+import rvo.utils as utils
 from rvo import __version__
 import rvo.config
 
 command_folder = os.path.join(os.path.dirname(__file__), 'commands')
 CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 
-# validators
-def validate_date(ctx, param, value):
-    try:
-        value = parse(value)
-        return value
-    except AttributeError:
-        return value
-    except ValueError:
-        raise click.BadParameter('Date format \"%s\" not valid' % value)
-
 # rvo command class
 class rvoCommands(click.MultiCommand):
 
     def list_commands(self, ctx):
-        rvo_commands = []
+        rv = []
         for filename in os.listdir(command_folder):
             #if filename.endswith('.py'):
             if filename.endswith('.py') and not filename.startswith('__init__'):
-                rvo_commands.append(filename[:-3])
-        rvo_commands.sort()
-        return rvo_commands
+                rv.append(filename[:-3])
+        rv.sort()
+        return rv
 
     def get_command(self, ctx, name):
         ns = {}

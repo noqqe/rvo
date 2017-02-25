@@ -5,16 +5,16 @@ import rvo.db as db
 import rvo.utils as utils
 import rvo.transaction as transaction
 from rvo.crypto import crypto
-from rvo.cli import validate_date
+from rvo.validate import validate_date
 
 @click.command(short_help="Modifies a documents metadata",
                help="""
                Modifies a documents meta data.
                See options for what you can modify.
-
                """)
 @click.argument('docid')
-@click.option('encrypt', '-e', '--encrypted', default=False, is_flag=True, help='Encrypt this document')
+@click.option('encrypt', '-e', '--encrypted', type=click.Choice(['yes', 'no', 'unchanged']),
+              default="unchanged", help='Encrypt this document')
 @click.option('tags', '-t', '--tag',
               type=str,
               multiple=True,
@@ -47,7 +47,7 @@ def modify(ctx, docid, tags, categories, encrypt, date):
     # tuple ("a", "b", "c", " ", "d", "e")
     # into
     # list ['abc', 'de']
-   # tags = ''.join(list(tags)).split()
+    # tags = ''.join(list(tags)).split()
     # categories = ''.join(list(categories)).split()
     tags = list(tags)
     categories = list(categories)
@@ -62,7 +62,7 @@ def modify(ctx, docid, tags, categories, encrypt, date):
         utils.log_info("Updated categories to %s" % ', '.join(categories))
         transaction.log(ctx, docid, "category", doc["title"])
 
-    if encrypt:
+    if encrypt == "yes":
         if doc["encrypted"] is False:
             c = crypto(ctx=ctx, password=False)
             content = c.encrypt_content(doc["content"].encode("utf-8"))
@@ -72,7 +72,7 @@ def modify(ctx, docid, tags, categories, encrypt, date):
         else:
             utils.log_error("Document %s is already stored encrypted" % doc["title"])
 
-    if not encrypt:
+    if encrypt == "no":
         if doc["encrypted"] is True:
             c = crypto(ctx=ctx, password=False)
             content = c.decrypt_content(doc["content"])
