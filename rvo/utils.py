@@ -155,7 +155,11 @@ def remove_emojis(content):
 	:content: str
     :returns: str
     """
-    content = unicode(content)
+    try:
+        content = unicode(content)
+    except UnicodeDecodeError:
+        pass
+
     try:
         emojis = re.compile(u'['
         u'\U0001F300-\U0001F64F'
